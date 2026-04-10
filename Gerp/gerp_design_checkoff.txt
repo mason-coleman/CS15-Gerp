@@ -1,5 +1,5 @@
-Names:
-utlns:
+Names: Nick Ferrari; Mason Coleman
+utlns: nferra02; mcolem07
 
 Answer the questions below, and submit your answers under the assignment
 "gerp Design Checkoff" on Gradescope. You must sign up for a design checkoff
@@ -13,12 +13,61 @@ For each question, give as much detail as you feel is necessary.
    list of member variables.
 
 Answer:
+
+Classes:
+
+Gerp:
+   Gerp(std::string dir, std::string outFile)
+
+   ~Gerp()
+
+   void run()
+
+   void search(std::string query, bool isSensitive)
+
+HashTable:
+   HashTable()
+
+   ~HashTable()
+
+   void insert(std::string key, int lineIndex)
+
+   std::vector<int> get(std::string key)
+
+Structs:
+
+FileLine:
+
+   std::string text
+
+   int lineNum
+
+   int fileIndex
+
+HashNode:
+
+   std::string key
+
+   std::vector<int> lineIndices
+
+   HashNode* next
+
         
 2. Describe the index that you will build for querying. What specific data
    structures will you use to build this index? *Important*: Bring an
    accompanying drawing of your index structure when you come to your checkoff.
 
 Answer:
+We will construct two seperate Hash Tables, one for case insensitive searches
+and one for case sensitive searches. To satisfy memory constraints, we will 
+store every line of text exactly once in a central vector<FileLine>.
+The sensitive table will store all words exactly as the appear in the text, 
+while the case insensitive table will put all words into lowercase format, 
+and will take in lowercase queries. 
+   
+
+
+
 
 3. To use your index, you will use something for lookup (the key) and you will
    get some associated data back (the value). What are the C++ *types* of your
@@ -30,8 +79,8 @@ Answer:
                 
 Answer:
 
-   Key type:
-   Value type:         
+   Key type: string (the word we are searching for)
+   Value type: Array of integers (line numbers that the word is on)        
 
 4. Explain what a collision is versus having multiple lines associated with 
    a particular word. Write (and/or draw) out an example of when a 
@@ -39,22 +88,39 @@ Answer:
    lines associated with a single word. 
 
 Answer:
+A collision occurs when after two different words are hashed, they end up 
+at the same line index. This can be dealt with in two ways: chaining and 
+open addressing. We will utilize chaining for this project, where we will
+add a hash node to a linked list for each collision.
+
+Multiple lines associating with the same word occurs when a word appears
+in multiple different lines of text. In our hashnodes, we will store an
+array of integers to store each line number.
+
 
 5. What do you expect the *space* complexity of your index will be? How many
    times will a single line be stored according to your data structures?
 
 Answer:
+O(V + 2E), where V is the number of unique words across both tables and
+E is the number of word occurances. Each line of text is stored only once
+in the main vector of FileLine structs. 
 
 6. What is the time complexity of *building* your index? If you refer to some
    variable, be sure to specify what the variable refers to, e.g., in "O(n)",
    state explicitly what "n" is.
 
 Answer:
+
+O(N * W) where N is the number of lines and W is the average number of words
+per line. 
                 
 7. What is the time complexity of *using* your index for lookup? As above,
    be specific about variables you use.
 
 Answer:
+O(L + R) where L is the length of the word and R is the number of occurances
+of that word. 
 
 8. How will you handle case-sensitive search?
    What is the time complexity (should be close to O(1))?
@@ -85,6 +151,11 @@ complexity is essentially O(1).
    only once by showing the line only once in the output. How will you do this? 
 
 Answer:
+In our HashNodes we are storing vectors of each line number. Since we have 
+seperate tables for sensitve and insensitive words, we just ensure to only
+print the same line number once. We can do this by making sure that every
+new line index we add in the building phase is not the same as the one
+currently at the back of the array. 
 
 11. How will you test your implementation and what specific evidence of testing
     will you submit?
@@ -104,3 +175,15 @@ they match exactly. We will also test edge cases.
     testing!
 
 Answer: 
+
+April 11-12: Finalize HashTable class with dynamic resizing and 
+collision chaining.
+
+April 13-14: Implement Gerp index building 
+(File traversal -> Line storage -> Word hashing).
+
+April 15-16: Implement command loop and search logic.
+
+
+April 17-18: Stress test with mediumGutenberg and largeGutenberg. 
+Final diff testing and README completion.
