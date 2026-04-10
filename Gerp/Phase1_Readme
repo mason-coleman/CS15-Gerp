@@ -1,0 +1,22 @@
+Phase 1 Readme
+
+Nick Ferrari and Mason Coleman
+
+For phase one, we implemented three new functions: traverseHelper(), 
+stripNonAlphaNum(), and traverseDirectory(). 
+
+stripNonAlphaNum(): This function is used to find a string that starts
+and ends with an alphanumeric character to be used as a query. It first
+starts iterating through each character at the front of the string to 
+find the starting alphanumeric character. and then iterates from the back
+to find the last alphanumeric character. The function then concatenates the
+original string to extract just the characters including and between these
+bounds, and returns the string.
+
+traverseDirectory(): This function takes in a directory and constructs an
+FSTree rooted at that directory. It then gets the node of the root, and passes
+that root, along with its name, to traverseHelper.
+
+traverseHelper(): This function takes in a node and a string containting the 
+current filepath, and recursively goes through every subdirectory of a starting
+node and prints it to terminal. 
