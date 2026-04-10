@@ -1,4 +1,4 @@
-Phase 1 Readme
+Phase 1 README
 
 Nick Ferrari and Mason Coleman
 
@@ -19,4 +19,4 @@ that root, along with its name, to traverseHelper.
 
 traverseHelper(): This function takes in a node and a string containting the 
 current filepath, and recursively goes through every subdirectory of a starting
-node and prints it to terminal. 
+node and prints it to terminal.
