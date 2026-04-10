@@ -59,12 +59,18 @@ Answer:
 8. How will you handle case-sensitive search?
    What is the time complexity (should be close to O(1))?
 
-Answer:
+Answer: For case-sensitive search, we strip the query with stripNonAlphaNum and 
+look it up in table, where words were stored as originals (ex."COMP" and "comp" 
+were inserted as separate keys). The time complexity is O(1). 
 
 9. How will you handle case-insensitive search?
    What is the time complexity (should be close to O(1))?
 
-Answer:
+Answer: For case-insensitive search, we strip the query with stripNonAlphaNum 
+and then lowercase every character. We then look up this lowercased key. At 
+build time, every word was also lowercased before insertion into this table
+(ex. "COMP", "Comp", and "comp" all map to the single key "comp"). The time 
+complexity is essentially O(1). 
 
 10. How are you handling duplicate words within a line? Consider these two example 
    lines: 
