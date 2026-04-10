@@ -83,7 +83,15 @@ Answer:
 11. How will you test your implementation and what specific evidence of testing
     will you submit?
 
-Answer:
+Answer: We will test at multiple levels. First, we will unit test 
+stripNonAlphaNum with a set of cases including empty strings, strings with only 
+non-alphanumeric characters, etc.. Next, we will unit test traverseDirectory by 
+constructing a small DirNode tree and verifying that the printed paths are 
+correct. Next, we will unit test the class by inserting a set of words and 
+verifying that they return the correctly. For full testing, we will run ./gerp 
+with a file and manually verify each line of output. We will then run the same 
+query file against ./the_gerp, sort both output files, and diff them to confirm 
+they match exactly. We will also test edge cases. 
 
 12. What is your schedule for completing this assignment? Include specific dates
     and the tasks that you would like to accomplish by each date. Do not forget
