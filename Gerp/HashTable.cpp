@@ -80,7 +80,7 @@ void HashTable::resize(){
     capacity = capacity * 2;
 
     //create our new nullptr filled table
-    std::vector<HashNode*> newTable;
+    std::vector<HashNode *> newTable;
     newTable.assign(capacity, nullptr);
 
     //Rehash all existing nodes into the new table
