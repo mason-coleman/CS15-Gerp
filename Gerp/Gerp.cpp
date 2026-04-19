@@ -59,7 +59,7 @@ void Gerp::buildFilePaths(DirNode *node, string path){
     }
 }
 
-void Gerp::run(string directory){
+void Gerp::run(string directory, std::string outputFile){
     //build FSTree from provided directory
     FSTree tree(directory);
     DirNode *root = tree.getRoot();
@@ -72,7 +72,7 @@ void Gerp::run(string directory){
     }
 
     //now that everything is indexed, we can take in commands
-    commandLoop();
+    commandLoop(outputFile);
 }
 
 void Gerp::processFile(string filePath, int fileIndex){
@@ -96,7 +96,7 @@ void Gerp::processFile(string filePath, int fileIndex){
         allLines.push_back(currentLine);
 
         //get index where we just stored this line
-        int masterIndex = allLines.size()-1;
+        int masterIndex = allLines.size() - 1;
 
         //use a stringstream to access each individual word
         stringstream ss(line);
@@ -118,4 +118,48 @@ void Gerp::processFile(string filePath, int fileIndex){
         lineNum++;
     }
     infile.close();
+}
+
+void Gerp::commandLoop(std::string outputFile) {
+    std::ofstream outFile(outputFile);
+
+    if (not outFile.is_open()){
+        std::cerr << "Error: could not open output file" << std::endl;
+    }
+    string query;
+    std::cout << "Query? ";
+    bool isRunning = true;
+
+    while (isRunning and std::cin >> query){
+        if (query == "@q" or query == "@quit"){
+            isRunning = false;
+        }
+        else if (query == "@f"){
+            std::string newOutputFilename;
+            std::cin >> newOutputFilename;
+            outFile.close();
+            outFile.open(newOutputFilename);
+        }
+        else if (query == "@i" or query == "@insensitive") {
+            std::cin >> query;
+            std::string stripped = stripNonAlphaNum(query);
+
+            if(stripped.empty()){
+                outFile << query << " Not Found. \n";
+            }
+            else{
+                std::string lowerWord;
+                for (int i = 0; i < stripped.length(); i++) {
+                    lowerWord += tolower(stripped[i]);
+                }
+
+                std::vector<int> results;
+                if (insensitiveTable.get(lowerWord, results)) {
+                    for (int i = 0; i < results.size(); i++){
+                        
+                    }
+                }
+            }
+        }
+    }
 }

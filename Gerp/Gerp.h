@@ -20,7 +20,7 @@ public:
     ~Gerp();
 
     //main function called from main
-    void run(std::string directory);
+    void run(std::string directory, std::string outputFile);
 
 private:
     //filePaths stores each unique filepath to be printed to terminal
@@ -32,7 +32,7 @@ private:
     HashTable insensitiveTable;
 
     void processFile(std::string filePath, int fileIndex);
-    void commandLoop();
+    void commandLoop(std::string outputFile);
 
     std::string stripNonAlphaNum(std::string input);
     void buildFilePaths(DirNode *node, std::string path);
