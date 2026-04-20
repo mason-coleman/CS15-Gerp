@@ -9,7 +9,7 @@
 struct HashNode {
     std::string key;
     std::vector<int> lineNumbers;
-    HashNode *next;
+    HashNode *next = nullptr;
 };
 
 class HashTable {

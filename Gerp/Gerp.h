@@ -28,7 +28,7 @@ private:
     std::vector<std::string> filePaths;
     std::vector<FileLine> allLines;
 
-    HashTable sensitveTable;
+    HashTable sensitiveTable;
     HashTable insensitiveTable;
 
     void processFile(std::string filePath, int fileIndex);
@@ -36,7 +36,6 @@ private:
 
     std::string stripNonAlphaNum(std::string input);
     void buildFilePaths(DirNode *node, std::string path);
-    std::string toLower(std::string input);
 };
 
 #endif

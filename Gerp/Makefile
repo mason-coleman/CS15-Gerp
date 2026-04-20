@@ -1,7 +1,7 @@
 ###
 ### Makefile for Gerp Project
 ###
-### Author:  YOUR NAME HERE
+### Author:  Nick Ferrari & Mason Coleman
 
 ## 
 ## Build up your Makefile in a similar manner as for Zap. Feel free 
@@ -11,6 +11,25 @@
 ## 
 ## At the end, you can delete this comment!
 ## 
+
+# --- Compiler Variables ---
+CXX      = clang++
+CXXFLAGS = -g3 -Wall -Wextra -std=c++11 -O2
+
+# --- Final Executable Rule ---
+# This rule links all the compiled object files together to create 'gerp'
+gerp: main.o Gerp.o HashTable.o FSTree.o DirNode.o
+	$(CXX) $(CXXFLAGS) -o gerp main.o Gerp.o HashTable.o FSTree.o DirNode.o
+
+# --- Object File Compilation Rules ---
+main.o: main.cpp Gerp.h
+	$(CXX) $(CXXFLAGS) -c main.cpp
+
+Gerp.o: Gerp.cpp Gerp.h HashTable.h FSTree.h DirNode.h
+	$(CXX) $(CXXFLAGS) -c Gerp.cpp
+
+HashTable.o: HashTable.cpp HashTable.h
+	$(CXX) $(CXXFLAGS) -c HashTable.cpp
 
 ##
 ## Here is a special rule that removes all .o files besides the provided ones 
