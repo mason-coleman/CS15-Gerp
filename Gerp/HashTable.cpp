@@ -125,7 +125,7 @@ bool HashTable::get(std::string key, std::vector<int> &result)
  * purpose:   Expands the hash table to maintain efficient search times
  * arguments: none
  * returns:   none
- * effects:   doubles capacity and rehashes all existing nodes into a new vector
+ * effects:   doubles capacity and rehashes all existing nodes into new vector
  * other:     maintains the required speed for large data sets
  */
 void HashTable::resize(){

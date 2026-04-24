@@ -108,7 +108,7 @@ void Gerp::buildFilePaths(DirNode *node, string path){
  * purpose:   Orchestrates the indexing process and starts the query loop
  * arguments: string directory to index, string outputFile for results
  * returns:   none
- * effects:   builds the FSTree, indexes all file contents, and starts interaction
+ * effects:   builds the FSTree, indexes all file contents, and starts loop
  * other:     none
  */
 void Gerp::run(string directory, std::string outputFile){
@@ -256,7 +256,8 @@ void Gerp::commandLoop(std::string outputFile) {
             //strip out non alphanum characters, check for query
             std::string stripped = stripNonAlphaNum(query);
             if (stripped.empty()){
-                outFile << query << " Not Found. Try with @insensitive or @i.\n";
+                outFile << query 
+                << " Not Found. Try with @insensitive or @i.\n";
             }
             //get fileline from array using line number, send it to outFile
             else{
@@ -270,7 +271,8 @@ void Gerp::commandLoop(std::string outputFile) {
                     }
                 }
                 else{
-                    outFile << query << " Not Found. Try with @insensitive or @i.\n";
+                    outFile << query 
+                    << " Not Found. Try with @insensitive or @i.\n";
                 }
             }
         }
