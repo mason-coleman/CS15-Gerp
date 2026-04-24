@@ -1,3 +1,16 @@
+/*
+ * HashTable.h
+ * Nicolas Ferrari & Mason Coleman
+ * 4/24/2026
+ *
+ * CS 15 Project 4: gerp
+ *
+ * Interface for the HashTable class.
+ * Defines the structure for the word index used in the gerp search engine.
+ * This class supports efficient storage and retrieval of line numbers
+ * associated with unique words, adhering to strict memory constraints.
+ */
+
 #ifndef HASHTABLE_H
 #define HASHTABLE_H
 

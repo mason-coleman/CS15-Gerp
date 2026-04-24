@@ -1,3 +1,17 @@
+/*
+ * Gerp.h
+ * Nicolas Ferrari & Mason Coleman
+ * 4/24/2026
+ *
+ * CS 15 Project 4: gerp
+ *
+ * Interface for the Gerp engine class.
+ * This class coordinates the indexing and searching of a directory system.
+ * It manages the file system traversal, populates dual hash tables for
+ * case-sensitive and insensitive searching, and executes the main command
+ * loop for user queries.
+ */
+
 #ifndef GERP_H
 #define GERP_H
 #include "HashTable.h"

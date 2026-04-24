@@ -1,5 +1,26 @@
+/*
+ * HashTable.cpp
+ * Nicolas Ferrari & Mason Coleman
+ * 4/24/2026
+ *
+ * CS 15 Project 4: gerp
+ *
+ * Implementation of a custom hash table for efficient word indexing.
+ * This class provides near-constant time search functionality for a string
+ * search engine. It handles collisions via separate chaining and maintains
+ * performance by dynamically doubling its capacity when the load factor 
+ * reaches 0.75.
+ */
 #include "HashTable.h"
 
+/*
+ * name:      HashTable (constructor)
+ * purpose:   Initializes a hash table with a default capacity of 1000
+ * arguments: none
+ * returns:   none
+ * effects:   allocates the internal table vector and fills it with nullptrs
+ * other:     none
+ */
 HashTable::HashTable(){
     capacity = 1000;
     numItems = 0;
@@ -7,6 +28,14 @@ HashTable::HashTable(){
     table.assign(capacity, nullptr);
 }
 
+/*
+ * name:      ~HashTable (destructor)
+ * purpose:   Cleans up all heap memory allocated for the hash table
+ * arguments: none
+ * returns:   none
+ * effects:   deletes every HashNode in every chain in the table
+ * other:     none
+ */
 HashTable::~HashTable(){
     for (int i = 0; i < capacity; i++){
         HashNode *curr = table[i];
@@ -18,6 +47,15 @@ HashTable::~HashTable(){
     }
 }
 
+/*
+ * name:      insert
+ * purpose:   Adds a word and its corresponding line number to the index
+ * arguments: a string (key) and an integer (lineNumber)
+ * returns:   none
+ * effects:   updates existing nodes or inserts a new HashNode; triggers 
+ * resize if load factor threshold is met
+ * other:     ensures a line number is only added once per word to save space
+ */
 void HashTable::insert(std::string key, int lineNumber)
 {
     //check load factor to maintain speed
@@ -55,6 +93,14 @@ void HashTable::insert(std::string key, int lineNumber)
     numItems++;
 }
 
+/*
+ * name:      get
+ * purpose:   Retrieves the list of line numbers associated with a word
+ * arguments: string key to find, and a vector reference to store results
+ * returns:   true if the key was found, false otherwise
+ * effects:   populates the result vector with the key's line numbers
+ * other:     none
+ */
 bool HashTable::get(std::string key, std::vector<int> &result)
 {
     //get index
@@ -74,6 +120,14 @@ bool HashTable::get(std::string key, std::vector<int> &result)
     return false;
 }
 
+/*
+ * name:      resize
+ * purpose:   Expands the hash table to maintain efficient search times
+ * arguments: none
+ * returns:   none
+ * effects:   doubles capacity and rehashes all existing nodes into a new vector
+ * other:     maintains the required speed for large data sets
+ */
 void HashTable::resize(){
     int oldCapacity = capacity;
     //double capacity

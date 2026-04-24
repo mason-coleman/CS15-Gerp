@@ -1,3 +1,17 @@
+/*
+ * Gerp.cpp
+ * Nicolas Ferrari & Mason Coleman
+ * 4/24/2026
+ *
+ * CS 15 Project 4: gerp
+ *
+ * Implementation of the Gerp class.
+ * This class serves as the main engine for the search program, handling the
+ * indexing of file directories and responding to user queries. It manages
+ * the FSTree navigation, dual-table hashing for case sensitivity, and 
+ * efficient line-based data retrieval.
+ */
+
 #include "Gerp.h"
 #include "FSTree.h"
 #include <iostream>
@@ -7,14 +21,38 @@
 
 using namespace std;
 
+/*
+ * name:      Gerp (constructor)
+ * purpose:   Initializes the Gerp object
+ * arguments: none
+ * returns:   none
+ * effects:   none (internal data structures initialize themselves)
+ * other:     none
+ */
 Gerp::Gerp() {
     //Vectors and HashTables handle their own memory, nothing is needed here
 }
 
+/*
+ * name:      ~Gerp (destructor)
+ * purpose:   Cleans up resources upon Gerp object destruction
+ * arguments: none
+ * returns:   none
+ * effects:   none (standard vectors and tables handle their own memory)
+ * other:     none
+ */
 Gerp::~Gerp() {
     //default is fine, no memory allocation in this class
 }
 
+/*
+ * name:      stripNonAlphaNum
+ * purpose:   Cleans a string of leading and trailing non-alphanumeric chars
+ * arguments: string input
+ * returns:   the cleaned string
+ * effects:   none
+ * other:     Returns an empty string if no alphanumeric chars are found.
+ */
 string Gerp::stripNonAlphaNum(string input){
     //check if empty
     if (input.empty()){
@@ -44,6 +82,14 @@ string Gerp::stripNonAlphaNum(string input){
     return input.substr(start, end - start + 1);
 }
 
+/*
+ * name:      buildFilePaths
+ * purpose:   Recursively traverses a directory tree to find all files
+ * arguments: a DirNode pointer (node) and the current cumulative path (path)
+ * returns:   none
+ * effects:   populates the filePaths vector with full pathname strings
+ * other:     uses recursive traversal through subdirectories.
+ */
 void Gerp::buildFilePaths(DirNode *node, string path){
     //base case, adding all files in director to filePaths vector
     for (int i = 0; i < node->numFiles(); i++){
@@ -57,6 +103,14 @@ void Gerp::buildFilePaths(DirNode *node, string path){
     }
 }
 
+/*
+ * name:      run
+ * purpose:   Orchestrates the indexing process and starts the query loop
+ * arguments: string directory to index, string outputFile for results
+ * returns:   none
+ * effects:   builds the FSTree, indexes all file contents, and starts interaction
+ * other:     none
+ */
 void Gerp::run(string directory, std::string outputFile){
     //build FSTree from provided directory
     FSTree tree(directory);
@@ -73,6 +127,14 @@ void Gerp::run(string directory, std::string outputFile){
     commandLoop(outputFile);
 }
 
+/*
+ * name:      processFile
+ * purpose:   Reads a single file and adds its content to the index
+ * arguments: string filePath, int fileIndex (the index in filePaths vector)
+ * returns:   none
+ * effects:   populates the allLines vector and updates both HashTables
+ * other:     converts words to lowercase for the insensitiveTable.
+ */
 void Gerp::processFile(string filePath, int fileIndex){
     ifstream infile(filePath);
     if (not infile.is_open()){
@@ -118,7 +180,14 @@ void Gerp::processFile(string filePath, int fileIndex){
     infile.close();
 }
 
-
+/*
+ * name:      commandLoop
+ * purpose:   Processes user commands and searches the index
+ * arguments: string outputFile to write search results to
+ * returns:   none
+ * effects:   continuously prompts the user for queries; writes results to file
+ * other:     terminates on @q, @quit, or EOF.
+ */
 void Gerp::commandLoop(std::string outputFile) {
     std::ofstream outFile(outputFile);
 
