@@ -1,6 +1,21 @@
-Phase 1 README
+Title: Gerp
 
-Nick Ferrari and Mason Coleman
+Names: Nick Ferrari and Mason Coleman
+
+Ackowledgements:
+
+Files:
+
+Compile/run:
+
+Architectural overview:
+
+Data Sturctures/Algorithms used:
+
+Testing:
+
+Hours Spent:
+
 
 For phase one, we implemented three new functions: traverseHelper(), 
 stripNonAlphaNum(), and traverseDirectory(). 
