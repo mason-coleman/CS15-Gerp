@@ -31,6 +31,12 @@ Gerp.o: Gerp.cpp Gerp.h HashTable.h FSTree.h DirNode.h
 HashTable.o: HashTable.cpp HashTable.h
 	$(CXX) $(CXXFLAGS) -c HashTable.cpp
 
+processing.o: processing.cpp processing.h FSTree.h DirNode.h
+	$(CXX) $(CXXFLAGS) -c processing.cpp
+
+unit_test: unit_test_driver.o processing.o FSTree.o DirNode.o
+	$(CXX) $(CXXFLAGS) unit_test_driver.o processing.o FSTree.o DirNode.o
+
 ##
 ## Here is a special rule that removes all .o files besides the provided ones 
 ## (DirNode.o and FSTree.o), all temporary files (ending with ~), and 
