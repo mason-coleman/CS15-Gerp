@@ -1,37 +1,79 @@
-Title: Gerp
+Title: CS15: Gerp
 
 Names: Nick Ferrari and Mason Coleman
 
 Ackowledgements:
 
-Files:
+Files: 
+    Gerp.cpp: This class serves as the main engine for the search program, 
+    handling the indexing of file directories and responding to user queries. 
+    It manages the FSTree navigation, dual-table hashing for case sensitivity, 
+    and efficient line-based data retrieval.
 
-Compile/run:
+    Gerp.h: This class coordinates the indexing and searching of a directory 
+    system. It manages the file system traversal, populates dual hash tables 
+    for case-sensitive and insensitive searching, and executes the main command 
+    loop for user queries.
 
-Architectural overview:
+    HashTable.cpp: This class provides near-constant time search functionality 
+    for a string search engine. It handles collisions via separate chaining and maintains performance by dynamically doubling its capacity when the load 
+    factor reaches 0.75.
 
-Data Sturctures/Algorithms used:
+    HashTable.h: Defines the structure for the word index used in the gerp 
+    search engine. This class supports efficient storage and retrieval of line numbers associated with unique words, adhering to strict memory 
+    constraints.
 
-Testing:
+    main.cpp: This file handles command-line argument validation and 
+    initializes the Gerp engine to begin the indexing and query process.
+
+    unit_tests.h: Tests for the functions in processing.cpp
+
+Compile/run: To compile the program, run make from the project directory. This 
+will produce an executable called gerp. To run the program, use the command 
+./gerp inputDirectory outputFile, where inputDirectory is the directory you 
+want to search and outputFile is the file where results will be written. 
+Once the program is running, it accepts prompt: any word performs a 
+case-sensitive search. @i or @insensitive followed by a word performs a case-insensitive search. @f followed by a filename redirects all further 
+output to that new file; and @q or @quit exits the program.
+
+Architectural overview: The program is organized around a Gerp object, which is created in main.cpp and drives the entire cycle of the search engine by calling 
+run() with the input directory and output filename. The Gerp class coordinates 
+three phases: indexing, querying, and output. During indexing, Gerp constructs 
+an FSTree from the directory. FSTree holds a pointer to the root DirNode, and 
+each DirNode holds a vector of filenames and a vector of pointers to its child DirNodes. buildFilePaths performs a recursive pre-order traversal of this tree, collecting every file path into a vector. Each file is then processed, which 
+reads every line, stores it as a struct, and inserts each word into two 
+HashTable instances: sensitiveTable and insensitiveTable. During querying, commandLoop reads commands. Depending on the command, lookups go into either sensitiveTable or insensitiveTable. Those indices are used to get the original 
+line text and file path, which are then written to the output file.
+
+Data Sturctures/Algorithms used: The core data structure is a hash table 
+implemented in HashTable.cpp. Each bucket in the table holds a linked list of HashNode structs, where each node stores a word as the key and a vector of 
+integers as the value. Each integer in that vector is an index into the vector, pointing to a line where that word appears. We chose a hash table because both insertion and lookup are O(1). The table starts with a capacity of 1000 and 
+doubles in size whenever the load factor exceeds 0.75, at which point all 
+existing nodes are rehashed into the new table.
+We maintain two separate hash tables: sensitiveTable stores words exactly as 
+they appear, while insensitiveTable stores every word converted to lowercase. 
+This means both case-sensitive and case-insensitive queries can be answered. Duplicate word occurrences on the same line are suppressed in HashTable::insert 
+by checking whether the incoming line index equals lineNumbers.back() before appending. Since words on a line are processed left to right, duplicate words 
+on the same line produce consecutive identical indices, and this check prevents 
+the same line from appearing twice in query results.
+
+Testing: Testing was carried out in two phases. For the functions in 
+processing.cpp, we wrote unit tests in unit_tests.cpp. The stripNonAlphaNum 
+function was tested with strings that needed no stripping, strings with 
+leading-only or trailing-only non-alphanumeric characters, strings with non-alphanumeric characters on both ends, strings where interior characters 
+must be preserved, strings composed entirely of non-alphanumeric characters 
+which should return an empty string, and empty string input. For diff testing, 
+we used the test directories provided at /comp/15/files/proj-gerp-test-dirs. 
+We began with tinyData, a small directory designed for quick iteration, which 
+let us verify basic correctness of indexing and querying before moving to 
+larger inputs. We then ran the program against the small, medium, and large 
+Gutenberg subsets. These were run directly from the course directory without 
+copying them locally, for example by passing 
+/comp/15/files/proj-gerp-test-dirs/mediumGutenberg as the directory argument. 
+For each test, we ran both our implementation and reference implementation on 
+the same set of queries, captured both output files, and diffed them against 
+each other. Queries covered both case-sensitive and case-insensitive searches. 
+The medium and large Gutenberg directories also served as stress tests for 
+time and space efficiency.
 
 Hours Spent:
-
-
-For phase one, we implemented three new functions: traverseHelper(), 
-stripNonAlphaNum(), and traverseDirectory(). 
-
-stripNonAlphaNum(): This function is used to find a string that starts
-and ends with an alphanumeric character to be used as a query. It first
-starts iterating through each character at the front of the string to 
-find the starting alphanumeric character. and then iterates from the back
-to find the last alphanumeric character. The function then concatenates the
-original string to extract just the characters including and between these
-bounds, and returns the string.
-
-traverseDirectory(): This function takes in a directory and constructs an
-FSTree rooted at that directory. It then gets the node of the root, and passes
-that root, along with its name, to traverseHelper.
-
-traverseHelper(): This function takes in a node and a string containting the 
-current filepath, and recursively goes through every subdirectory of a starting
-node and prints it to terminal.
